@@ -1,5 +1,5 @@
 grammar test;
-operation: WS* NUMBER WS* SUB WS* NUMBER WS*;
+operation: WS* NUMBER WS* ADD WS* NUMBER WS*;
 operation2: WS* ft_dcl WS*;
 
 ADD: '+';
@@ -72,4 +72,5 @@ if : 'if';
 string: .+;
 const: 'const';
 For: 'for';
+
 
