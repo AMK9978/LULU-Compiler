@@ -1,14 +1,14 @@
 grammar test;
-operation: WS* NUMBER WS* ADD WS* NUMBER WS*;
-operation2: WS* ft_dcl WS*;
+operation: WS? NUMBER WS? ADD WS? NUMBER WS?;
+operation2: WS? ft_dcl WS?;
 
 ADD: '+';
 SUB: '-';
 MUL: '*';
 DIV: '/';
-WS:  (' ' | '\t' | '\r' | '\n' | '#'.*? | '#'.*?'#')* ;
+WS:  (' ' | '\t' | '\r' | '\n' | '#'.*? | '#'.*?'#')+ ;
 NUMBER: [0-9]+;
-ft_dcl: 'declare {' (func_dcl | type_dcl | var_def)+ '}';
+ft_dcl: 'declare' WS? '{' WS? (func_dcl | type_dcl | var_def)+ WS? '}';
 func_dcl: ('(' args ')' '=')? id '(' (args | args_var)? ')' ';';
 args: type ('[' ']')* | args ',' type ('[' ']')*;
 args_var: type ('[' ']')* id | args_var ',' type ('[' ']')* id;
@@ -33,7 +33,6 @@ params: expr | expr ',' params;
 cond_stmt: if expr (block | stmt) (else (block | stmt))? | switch var '{' switch_body '}' ;
 switch_body: (caseof int_const ':' block)+ (default ':' block)?;
 loop_stmt: for (type?assign)? ';' expr ';' assign? block | while expr block;
-type: int | bool | float | string | id;
 const_val: int_const | real_const | bool_const | string_const;
 unary_op: '-' | '!' | '~';
 binary_op: arthmetic | relational | bitwise | logical;
@@ -41,35 +40,46 @@ arthmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
-nil : 'nil';
-destruct: 'destruct';
-else: 'else';
-allocate: 'allocate';
 
 id: ID ;
 int_const: 'int_const';
 real_const: 'real_const';
-float: 'float';
+type: int | bool | float | string | id;
+//Datatypes:
+Float: [-+]?([0-9]*[.])?[0-9]+;
+Int: [xX][0-9a-fA-F]+ | [0-9]+;
+String: .+?;
+Bool: 'true' | 'false';
+ID: [a-zA-Z] [a-zA-Z0-9]*;
+
 read: 'read';
 write: 'write';
 caseof : 'caseof';
 default: 'default';
 while: 'while';
 block: WS* ('{' WS* '}')? WS*;
+
+//Data identifiers:
 string_const: 'string_const';
 bool_const: 'bool_const';
-ID: [a-zA-Z] [a-zA-Z0-9]*;
+variable: ID | NUMBER | Float | bool;
+int: 'int';
+float: 'float';
+bool: 'bool';
+string: 'string';
+
+nil : 'nil';
+destruct: 'destruct';
+else: 'else';
+allocate: 'allocate';
 for: For WS* '(' WS* (type? id '=' id)? WS* ';' WS* (type? id )? WS* ';' WS* (id)? WS* ')' WS* block?;
-int : ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')+;
 this : 'this';
 super: 'super';
-bool: 'false' | 'true';
 continue: 'continue';
 break: 'break';
 switch : 'switch';
 
 if : 'if';
-string: .+;
 const: 'const';
 For: 'for';
 
