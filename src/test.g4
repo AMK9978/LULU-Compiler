@@ -1,5 +1,5 @@
 grammar test;
-operation: WS* NUMBER WS* ADD WS* NUMBER WS*;
+operation: WS* NUMBER WS* SUB WS* NUMBER WS*;
 operation2: WS* ft_dcl WS*;
 
 ADD: '+';
@@ -12,6 +12,7 @@ ft_dcl: 'declare {' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? id '(' (args | args_var)? ')' ';';
 args: type ('[' ']')* | args ',' type ('[' ']')*;
 args_var: type ('[' ']')* id | args_var ',' type ('[' ']')* id;
+
 type_dcl: id ';';
 var_def: const? type var_val (',' var_val)* ';';
 var_val: ref ('=' expr)?;
