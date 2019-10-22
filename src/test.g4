@@ -1,10 +1,12 @@
 grammar test;
 operation: WS* NUMBER WS* ADD WS* NUMBER WS*;
+operation2: WS* ft_dcl WS*;
+
 ADD: '+';
 SUB: '-';
 MUL: '*';
 DIV: '/';
-WS:  (' ' | '\t' | '\r' | '\n')* ;
+WS:  (' ' | '\t' | '\r' | '\n' | '#'.*? | '#'.*?'#')* ;
 NUMBER: [0-9]+;
 ft_dcl: 'declare {' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? id '(' (args | args_var)? ')' ';';
