@@ -1,20 +1,18 @@
 grammar test;
 operation: WS? NUMBER WS? ADD WS? NUMBER WS?;
 operation2: WS? ft_dcl WS?;
-
 ADD: '+';
 SUB: '-';
 MUL: '*';
 DIV: '/';
 WS:  (' ' | '\t' | '\r' | '\n' | '#'.*? | '#'.*?'#')+ ;
 NUMBER: [0-9]+;
-ft_dcl: 'declare' WS? '{' WS? (func_dcl | type_dcl | var_def)+ WS? '}';
+ft_dcl: WS? 'declare' WS? '{' WS? (func_dcl | type_dcl | var_def)+? WS? '}';
 func_dcl: ('(' args ')' '=')? id '(' (args | args_var)? ')' ';';
 args: type ('[' ']')* | args ',' type ('[' ']')*;
 args_var: type ('[' ']')* id | args_var ',' type ('[' ']')* id;
-
-type_dcl: id ';';
-var_def: const? type var_val (',' var_val)* ';';
+type_dcl: WS*? type? WS* ID WS* ';';
+var_def: const? WS* type WS* var_val WS* (',' var_val)* WS* ';';
 var_val: ref ('=' expr)?;
 ft_def: (type_def | fun_def);
 type_def: type id (':' id)? '{' component+ '}';
@@ -40,7 +38,6 @@ arthmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
-
 id: ID ;
 int_const: 'int_const';
 real_const: 'real_const';
@@ -50,7 +47,8 @@ Float: [-+]?([0-9]*[.])?[0-9]+;
 Int: [xX][0-9a-fA-F]+ | [0-9]+;
 String: .+?;
 Bool: 'true' | 'false';
-ID: [a-zA-Z] [a-zA-Z0-9]*;
+Alphabet: [a-zA-Z];
+ID : Alphabet+(Alphabet | NUMBER)*;
 
 read: 'read';
 write: 'write';
