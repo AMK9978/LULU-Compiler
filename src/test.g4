@@ -1,9 +1,7 @@
 grammar test;
 
 program: ft_dcl?ft_def+;
-test: type;
-WS: [ \t\r\n]+  -> skip;
-Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
+//test: type;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
@@ -38,6 +36,10 @@ bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
 type: 'int' | 'float' | 'bool' | 'string' | ID;
+
+//skip
+WS: [ \t\r\n]+  -> skip;
+Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
 
 //KEY WORDS
 Function: 'function';
