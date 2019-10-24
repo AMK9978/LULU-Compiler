@@ -1,83 +1,76 @@
 grammar test;
-operation:  ID;
-operation2: ft_dcl;
 
-WS: ([ \t\r\n] | '#'.*? | '#'.*?'#')+  -> skip;
+program: ft_dcl?ft_def+;
+test: type;
+WS: [ \t\r\n]+  -> skip;
+Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
 
-ft_dcl: 'declare' '{' (func_dcl | type_dcl | var_def)+? '}';
-func_dcl: ('(' args ')' '=')? id '(' (args | args_var)? ')' ';';
+ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
+func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
 args: type ('[' ']')* | args ',' type ('[' ']')*;
-args_var: type ('[' ']')* id | args_var ',' type ('[' ']')* id;
-type_dcl: type?  ID ';';
-var_def: const?  type  var_val (',' var_val)* ';';
+args_var: type ('[' ']')* ID | args_var ',' type ('[' ']')* ID;
+type_dcl: ID ';';
+var_def: Const?  type  var_val (',' var_val)* ';';
 var_val: ref ('=' expr)?;
 ft_def: (type_def | fun_def);
-type_def: type id (':' id)? '{' component+ '}';
+type_def: Type ID (':' ID)? '{' component+ '}';
 component: access_modifier? (var_def | fun_def);
 access_modifier: 'private' | 'public' | 'protected';
-fun_def: ('(' args_var ')' '=')? id '(' args_var? ')' block;
-stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | break ';' | continue ';' | destruct ('[' ']')* id ';';
+fun_def: ('(' args_var ')' '=')? Function ID '(' args_var? ')' block;
+block: '{' (var_def|stmt)* '}';
+stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | Break ';' | Continue ';' | Destruct ('[' ']')* ID ';';
 assign: (var | '(' var (',' var)* ')') '=' expr;
-var: ((this | super)'.')? ref ('.' ref)*;
-ref: id ('[' expr ']')*;
-expr: expr binary_op expr | '(' expr ')' | unary_op expr | const_val | allocate handle_call | func_call | var | list | nil;
-func_call: (var '.')? handle_call | read '(' ')' | write '(' expr ')';
+var: ((This | Super)'.')? ref ('.' ref)*;
+ref: ID ('[' expr ']')*;
+expr: expr binary_op expr | '(' expr ')' | unary_op expr | const_val | Allocate handle_call | func_call | var | list | Nil;
+func_call: (var '.')? handle_call | Read '(' ')' | Write '(' expr ')';
 list : '[' (expr | list) (','(expr | list))* ']';
-handle_call: id '(' params? ')';
+handle_call: ID '(' params? ')';
 params: expr | expr ',' params;
-cond_stmt: if expr (block | stmt) (else (block | stmt))? | switch var '{' switch_body '}' ;
-switch_body: (caseof int_const ':' block)+ (default ':' block)?;
-loop_stmt: for (type?assign)? ';' expr ';' assign? block | while expr block;
-const_val: int_const | real_const | bool_const | string_const;
+cond_stmt: 'if' expr (block | stmt) (Else (block | stmt))? | Switch var '{' switch_body '}' ;
+switch_body: (Caseof 'int' ':' block)+ (Default ':' block)?;
+loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
+const_val: Int | Float | Bool | String;
 unary_op: '-' | '!' | '~';
 binary_op: arthmetic | relational | bitwise | logical;
 arthmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
-id: ID ;
-int_const: 'int_const';
-real_const: 'real_const';
-type: int | bool | float | string | id;
-//Datatypes:
+type: 'int' | 'float' | 'bool' | 'string' | ID;
+
+//KEY WORDS
+Function: 'function';
+For: 'for';
+While: 'while';
+Caseof: 'caseof';
+Default: 'default';
+This : 'this';
+Super: 'super';
+Continue: 'continue';
+Break: 'break';
+Switch : 'switch';
+Type: 'type';
+Declare: 'declare';
+Read: 'read';
+Write: 'write';
+Const: 'const';
+Nil : 'nil';
+Destruct: 'destruct';
+Else: 'else';
+Allocate: 'allocate';
+
+//Data Identifiers:
 Float: [-+]?([0-9]*[.])?[0-9]+;
-Int: [xX][0-9a-fA-F]+ | [0-9]+;
+Int: ('0x'|'0X' [0-9a-fA-F]+) | [0-9]+;
 String: ['].+?['];
 Bool: 'true' | 'false';
 ID: ('@'|'_'|ALPHABET)('@'|'_'|ALPHABET|DIGIT)*;
-
-read: 'read';
-write: 'write';
-caseof : 'caseof';
-default: 'default';
-while: 'while';
-block: WS* ('{' WS* '}')? WS*;
-
-//Data identifiers:
-string_const: 'string_const';
-bool_const: 'bool_const';
-variable: ID | NUMBER | Float | bool;
-int: 'int';
-float: 'float';
-bool: 'bool';
-string: 'string';
-
-nil : 'nil';
-destruct: 'destruct';
-else: 'else';
-allocate: 'allocate';
-for: For WS* '(' WS* (type? id '=' id)? WS* ';' WS* (type? id )? WS* ';' WS* (id)? WS* ')' WS* block?;
-this : 'this';
-super: 'super';
-continue: 'continue';
-break: 'break';
-switch : 'switch';
-
-if : 'if';
-const: 'const';
-For: 'for';
 
 fragment DIGIT : [0-9];
 fragment NUMBER: DIGIT+;
 fragment ALPHABET: [a-zA-Z];
 
+//variable: ID | Int | Float | Bool;
+//for: For '(' (type? ID '=' ID)? ';' (type? ID )? ';' (ID)? ')' block?;
+//while: While expr block;
