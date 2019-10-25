@@ -63,8 +63,9 @@ Else: 'else';
 Allocate: 'allocate';
 
 //Data Identifiers:
-Float: [-+]?([0-9]*[.])?[0-9]+;
-Int: ('0x'|'0X' [0-9a-fA-F]+) | [0-9]+;
+Int_val: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
+Int: [-+]?Int_val;
+Float: [-+]?((Int_val?)?[.](Int?'^'[-+]?Int | Int) | (Int_val)[.](Int?'^'Int | Int?)?);
 String: ['].+?['];
 Bool: 'true' | 'false';
 ID: ('@'|'_'|ALPHABET)('@'|'_'|ALPHABET|DIGIT)*;
