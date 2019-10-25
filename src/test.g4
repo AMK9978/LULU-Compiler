@@ -28,8 +28,8 @@ params: expr | expr ',' params;
 cond_stmt: 'if' expr (block | stmt) (Else (block | stmt))? | Switch var '{' switch_body '}' ;
 switch_body: (Caseof 'int' ':' block)+ (Default ':' block)?;
 loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
-const_val: Int | Float | Bool | String;
-unary_op: '-' | '!' | '~';
+const_val: Int  | Float |  Bool | String;
+unary_op: '!' | '~' | '-';
 binary_op: arthmetic | relational | bitwise | logical;
 arthmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
@@ -63,13 +63,14 @@ Else: 'else';
 Allocate: 'allocate';
 
 //Data Identifiers:
-Int_val: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
+fragment Int_val: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
 Int: [-+]?Int_val;
 Float: [-+]?((Int_val?)?[.](Int?'^'[-+]?Int | Int) | (Int_val)[.](Int?'^'Int | Int?)?);
-String: ['].+?['];
+fragment ESC: '\\' ('n' | 'r' | '0' | 't' | '\\' | '\'' | [xX][a-fA-F0-9][a-fA-F0-9]) ;
+fragment XX: [^/];
+String: ['](ESC | XX)*['];
 Bool: 'true' | 'false';
 ID: ('@'|'_'|ALPHABET)('@'|'_'|ALPHABET|DIGIT)*;
-
 fragment DIGIT : [0-9];
 fragment NUMBER: DIGIT+;
 fragment ALPHABET: [a-zA-Z];
