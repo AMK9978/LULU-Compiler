@@ -13,7 +13,7 @@ var_val: ref ('=' expr)?;
 ft_def: (type_def | fun_def);
 type_def: Type ID (':' ID)? '{' component+ '}';
 component: access_modifier? (var_def | fun_def);
-access_modifier: 'private' | 'public' | 'protected';
+access_modifier: Private | Public | Protected;
 fun_def: ('(' args_var ')' '=')? Function ID '(' args_var? ')' block;
 block: '{' (var_def|stmt)* '}';
 stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | Break ';' | Continue ';' | Destruct ('[' ']')* ID ';';
@@ -26,22 +26,27 @@ list : '[' (expr | list) (','(expr | list))* ']';
 handle_call: ID '(' params? ')';
 params: expr | expr ',' params;
 cond_stmt: If expr (block | stmt) (Else (block | stmt))? | Switch var '{' switch_body '}' ;
-switch_body: (Caseof 'int' ':' block)+ (Default ':' block)?;
+switch_body: (Caseof Int_val ':' block)+ (Default ':' block)?;
 loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
-const_val: Int  | Float |  Bool | String;
+type: Int | Float | Bool | String | ID;
+const_val: Int_val  | Float_val |  String_val | Bool_val;
 unary_op: '!' | '~' | '-';
 binary_op: arthmetic | relational | bitwise | logical;
 arthmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
-type: 'int' | 'float' | 'bool' | 'string' | ID;
+
 
 //skip
-WS: [ \t\r\n]+  -> skip;
+Ws: [ \t\r\n]+  -> skip;
 Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
 
 //KEY WORDS
+Int: 'int';
+Float: 'float';
+Bool: 'bool';
+String: 'string';
 Function: 'function';
 If : 'if';
 Else: 'else';
@@ -62,12 +67,15 @@ Write: 'write';
 Nil : 'nil';
 Destruct: 'destruct';
 Allocate: 'allocate';
+Public: 'public';
+Private: 'private';
+Protected: 'protected';
 
 //Data Identifiers:
-Int: INT_DEC | INT_HEX;
-Float: (Int '.' Int EXP?) | ('.'Int EXP?) | (Int '.' EXP?);
-String: ['](EXC_BS|ESC_CODE)*['];
-Bool: 'true' | 'false';
+Int_val: INT_DEC | INT_HEX;
+Float_val: (Int_val '.' Int_val EXP?) | ('.'Int_val EXP?) | (Int_val '.' EXP?);
+String_val: ['](EXC_BS|ESC_CODE)*['];
+Bool_val: 'true' | 'false';
 ID: ('@'|'_'|LETTER)('@'|'_'|LETTER|DIGIT)*;
 
 
@@ -78,9 +86,3 @@ fragment INT_DEC: DIGIT+;
 fragment INT_HEX:('0x'|'0X')[0-9a-fA-F]+;
 fragment DIGIT : [0-9];
 fragment LETTER: [a-zA-Z];
-
-//fragment INT_VAL: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
-//Float: [-+]?((INT_VAL?)?[.](Int?'^'[-+]?Int | Int) | (INT_VAL)[.](Int?'^'Int | Int?)?);
-//variable: ID | Int | Float | Bool;
-//for: For '(' (type? ID '=' ID)? ';' (type? ID )? ';' (ID)? ')' block?;
-//while: While expr block;
