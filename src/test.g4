@@ -73,7 +73,7 @@ Protected: 'protected';
 
 //Data Identifiers:
 Int_val: INT_DEC | INT_HEX;
-Float_val: (Int_val '.' Int_val EXP?) | ('.'Int_val EXP?) | (Int_val '.' EXP?);
+Float_val: ( (Int_val? '.' Int_val) | (Int_val '.') ) EXP?;
 String_val: ['](EXC_BS|ESC_CODE)*['];
 Bool_val: 'true' | 'false';
 ID: ('@'|'_'|LETTER)('@'|'_'|LETTER|DIGIT)*;
