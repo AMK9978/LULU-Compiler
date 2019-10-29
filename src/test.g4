@@ -79,7 +79,7 @@ Bool_val: 'true' | 'false';
 ID: ('@'|'_'|LETTER)('@'|'_'|LETTER|DIGIT)*;
 
 
-fragment EXP: '^'[-+]?Int;
+fragment EXP: '^'[-+]?Int_val;
 fragment ESC_CODE: '\\'('n' | 'r' | '0' | 't' | '\\' | '\'' | [xX][a-fA-F0-9][a-fA-F0-9]) ;
 fragment EXC_BS: ~('\\');
 fragment INT_DEC: DIGIT+;
