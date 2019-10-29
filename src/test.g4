@@ -1,7 +1,7 @@
 grammar test;
 
 program: ft_dcl?ft_def+;
-//test: type;
+test: Float;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
@@ -25,7 +25,7 @@ func_call: (var '.')? handle_call | Read '(' ')' | Write '(' expr ')';
 list : '[' (expr | list) (','(expr | list))* ']';
 handle_call: ID '(' params? ')';
 params: expr | expr ',' params;
-cond_stmt: 'if' expr (block | stmt) (Else (block | stmt))? | Switch var '{' switch_body '}' ;
+cond_stmt: If expr (block | stmt) (Else (block | stmt))? | Switch var '{' switch_body '}' ;
 switch_body: (Caseof 'int' ':' block)+ (Default ':' block)?;
 loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
 const_val: Int  | Float |  Bool | String;
@@ -43,38 +43,44 @@ Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
 
 //KEY WORDS
 Function: 'function';
+If : 'if';
+Else: 'else';
+Switch : 'switch';
+Default: 'default';
+Break: 'break';
 For: 'for';
 While: 'while';
+Continue: 'continue';
+Const: 'const';
 Caseof: 'caseof';
-Default: 'default';
 This : 'this';
 Super: 'super';
-Continue: 'continue';
-Break: 'break';
-Switch : 'switch';
 Type: 'type';
 Declare: 'declare';
 Read: 'read';
 Write: 'write';
-Const: 'const';
 Nil : 'nil';
 Destruct: 'destruct';
-Else: 'else';
 Allocate: 'allocate';
 
 //Data Identifiers:
-fragment Int_val: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
-Int: [-+]?Int_val;
-Float: [-+]?((Int_val?)?[.](Int?'^'[-+]?Int | Int) | (Int_val)[.](Int?'^'Int | Int?)?);
-fragment ESC: '\\' ('n' | 'r' | '0' | 't' | '\\' | '\'' | [xX][a-fA-F0-9][a-fA-F0-9]) ;
-fragment XX: [^/];
-String: ['](ESC | XX)*['];
+Int: INT_DEC | INT_HEX;
+Float: (Int '.' Int EXP?) | ('.'Int EXP?) | (Int '.' EXP?);
+String: ['](EXC_BS|ESC_CODE)*['];
 Bool: 'true' | 'false';
-ID: ('@'|'_'|ALPHABET)('@'|'_'|ALPHABET|DIGIT)*;
-fragment DIGIT : [0-9];
-fragment NUMBER: DIGIT+;
-fragment ALPHABET: [a-zA-Z];
+ID: ('@'|'_'|LETTER)('@'|'_'|LETTER|DIGIT)*;
 
+
+fragment EXP: '^'[-+]?Int;
+fragment ESC_CODE: '\\'('n' | 'r' | '0' | 't' | '\\' | '\'' | [xX][a-fA-F0-9][a-fA-F0-9]) ;
+fragment EXC_BS: ~('\\');
+fragment INT_DEC: DIGIT+;
+fragment INT_HEX:('0x'|'0X')[0-9a-fA-F]+;
+fragment DIGIT : [0-9];
+fragment LETTER: [a-zA-Z];
+
+//fragment INT_VAL: ('0x'[0-9a-fA-F]+|'0X' [0-9a-fA-F]+) | [0-9]+;
+//Float: [-+]?((INT_VAL?)?[.](Int?'^'[-+]?Int | Int) | (INT_VAL)[.](Int?'^'Int | Int?)?);
 //variable: ID | Int | Float | Bool;
 //for: For '(' (type? ID '=' ID)? ';' (type? ID )? ';' (ID)? ')' block?;
 //while: While expr block;
