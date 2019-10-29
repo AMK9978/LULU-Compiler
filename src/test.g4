@@ -1,6 +1,6 @@
 grammar test;
 
-program: ft_dcl?ft_def+;
+program: ft_dcl?ft_def+ EOF;
 test: Float_val EOF;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
