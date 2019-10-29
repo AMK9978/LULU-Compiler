@@ -1,7 +1,7 @@
 grammar test;
 
 program: ft_dcl?ft_def+;
-test: Float;
+test: Float_val EOF;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
@@ -42,7 +42,7 @@ relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
 Ws: [ \t\r\n]+  -> skip;
 Comment:  ('#$'.*?'\n'| '#('.*?')#') -> skip;
 
-//KEY WORDS
+//Keywords
 Int: 'int';
 Float: 'float';
 Bool: 'bool';
