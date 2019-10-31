@@ -9,7 +9,7 @@ args: type ('[' ']')* | args ',' type ('[' ']')*;
 args_var: type ('[' ']')* ID | args_var ',' type ('[' ']')* ID;
 type_dcl: ID ';';
 var_def: Const?  type  var_val (',' var_val)* ';';
-var_val: ref ('=' expr)?;
+var_val: ref ('=' expr)?; // the Variable that can be with value or just the name of variable
 ft_def: (type_def | fun_def);
 type_def: Type ID (':' ID)? '{' component+ '}';
 component: access_modifier? (var_def | fun_def);
@@ -74,7 +74,7 @@ Protected: 'protected';
 //Data Identifiers:
 Int_val: INT_DEC | INT_HEX;
 Float_val: ( (Int_val? '.' Int_val) | (Int_val '.') ) EXP?;
-String_val: ['](EXC_BS|ESC_CODE)*['];
+String_val: ['](EXC_BS|ESC_CODE)*?['];
 Bool_val: 'true' | 'false';
 ID: ('@'|'_'|LETTER)('@'|'_'|LETTER|DIGIT)*;
 
