@@ -1,6 +1,7 @@
 grammar test;
 
 program: ft_dcl?ft_def+ EOF;
+test: expr EOF;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
@@ -8,8 +9,7 @@ args: type ('[' ']')* | args ',' type ('[' ']')*;
 args_var: type ('[' ']')* ID | args_var ',' type ('[' ']')* ID;
 type_dcl: ID ';';
 var_def: Const?  type  var_val (',' var_val)* ';';
-// the Variable that can be with value or just the name of variable
-var_val: ref ('=' expr)?;
+var_val: ref ('=' expr)?; // the Variable that can be with value or just the name of variable
 ft_def: (type_def | fun_def);
 type_def: Type ID (':' ID)? '{' component+ '}';
 component: access_modifier? (var_def | fun_def);
@@ -20,7 +20,8 @@ stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | Break ';' | Continue 
 assign: (var | '(' var (',' var)* ')') '=' expr;
 var: ((This | Super)'.')? ref ('.' ref)*;
 ref: ID ('[' expr ']')*;
-expr: unary_op expr | expr mul_div_binary_op expr | expr binary_op expr | '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
+expr: unary_op expr | expr op1 expr | expr op2 expr| expr op3 expr | expr op4 expr | expr bitwise expr | expr logical expr
+| '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
 func_call: (var '.')? handle_call | Read '(' ')' | Write '(' expr ')';
 list : '[' (expr | list) (','(expr | list))* ']';
 handle_call: ID '(' params? ')';
@@ -31,13 +32,12 @@ loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
 type: Int | Float | Bool | String | ID;
 const_val: Int_val  | Float_val |  String_val | Bool_val;
 unary_op: '!' | '~' | '-';
-binary_op: arithmetic | relational | bitwise | logical;
-mul_div_binary_op: '*' | '/' | '%';
-arithmetic: '+' | '-';
+op1: '*' | '/' | '%';
+op2: '+' | '-';
+op3: '<=' | '>=' | '<' | '>';
+op4: '==' | '!=';
 bitwise: '&' | '|';
 logical: '||' | '&&';
-relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
-
 
 //skip
 Ws: [ \t\r\n]+  -> skip;
