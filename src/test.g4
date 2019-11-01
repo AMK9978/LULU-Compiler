@@ -1,7 +1,7 @@
 grammar test;
 
 program: ft_dcl?ft_def+ EOF;
-test: expr EOF;
+test: stmt EOF;
 
 ft_dcl: Declare '{' (func_dcl | type_dcl | var_def)+ '}';
 func_dcl: ('(' args ')' '=')? ID '(' (args | args_var)? ')' ';';
@@ -20,8 +20,7 @@ stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | Break ';' | Continue 
 assign: (var | '(' var (',' var)* ')') '=' expr;
 var: ((This | Super)'.')? ref ('.' ref)*;
 ref: ID ('[' expr ']')*;
-expr: unary_op expr | expr op1 expr | expr op2 expr| expr op3 expr | expr op4 expr | expr bitwise expr | expr logical expr
-| '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
+expr: unary_op expr | expr binary_op expr | '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
 func_call: (var '.')? handle_call | Read '(' ')' | Write '(' expr ')';
 list : '[' (expr | list) (','(expr | list))* ']';
 handle_call: ID '(' params? ')';
@@ -32,12 +31,12 @@ loop_stmt: For (type?assign)? ';' expr ';' assign? block | While expr block;
 type: Int | Float | Bool | String | ID;
 const_val: Int_val  | Float_val |  String_val | Bool_val;
 unary_op: '!' | '~' | '-';
-op1: '*' | '/' | '%';
-op2: '+' | '-';
-op3: '<=' | '>=' | '<' | '>';
-op4: '==' | '!=';
+binary_op: arithmetic | relational | bitwise | logical;
+arithmetic: '+' | '-' | '*' | '/' | '%';
 bitwise: '&' | '|';
 logical: '||' | '&&';
+relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
+
 
 //skip
 Ws: [ \t\r\n]+  -> skip;
