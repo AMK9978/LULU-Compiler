@@ -1,0 +1,19 @@
+declare
+{
+int a;
+myType;
+(int, float) = f1(float b);
+}
+type myType {
+protected int x;
+public (float y) = function myFun(int z){
+if (z > this.x)
+{
+y = -23.5  ------ 87;
+}
+else
+{
+y = 15.2;
+}
+}
+}

@@ -1,0 +1,32 @@
+declare
+{
+int a;
+myType;
+(int, float) = f1(float b);
+}
+type myType {
+protected int x;
+public (float y) = function myFun(int z){
+if (z > this.x)
+{
+y = 23.5;
+}
+else
+{
+y = 15.2;
+}
+}
+}
+(int r) = function start() {
+const float c = 0.23;
+int s;
+read(s);
+float w;
+(r, w) = f1(s);
+}
+(int x, float y) = function f1(int b)
+{
+myType a = allocate myType();
+(y) = a.myFun(b);
+x = 0;
+}
