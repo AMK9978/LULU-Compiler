@@ -1,0 +1,60 @@
+#$ <ft_dcl>
+declare{
+#$ <func_dcl>
+(int[],float[],myType[]) = f(int[],badType);
+(int,float) = f(int x,int y,int _e);
+(int ,float) = f();
+f(int , float);
+f(int x,float y,int[] x);
+f();
+#$ <type_dcl>
+x;
+#$ <var_def>
+const bad_type myRef = (2+-3);
+float myRef[4][3][2][1] = f(-1+-2,-2--3,4);
+foat myRef[[2,3,[1,2]]] = write('dsaf');
+myType ref[2][3] = super.man[1][2].oon[1][2].f('dfa',true,false,3);
+int myRef = nit,myVar;
+int myRef = [1,2,[3,4]];
+}
+#$ <ft_def>
+#$ <type_def>
+type qint:iint
+{
+	#$ <var_def>
+	public const strign s = 'adf';
+	const int q[2] = 'afds\t\'\'\0\'\'\r\n',q[3] = true;
+	#$ <fun_def>
+	(int x,int y,float z) = function myF (int j,int q,int _ww)
+	{
+		int x,t;
+		x = -002.00^-11;
+		x = (2+2);
+		x = [2,[nil,2]];
+		(x,y,z) = allocate f(2,3,4);
+		this.a.b.c = 2.;
+		read();
+		amk.f1();
+		break;
+		continue;
+		destruct[][][]ali;
+		if var!=22 {} else x=2;
+		switch x[2].c {
+		caseof 22 : {int x;x =3;}
+		}
+		for myT x=2;x||y&&z||q;x=~!-6 {x=t&q|y|p;}
+		while x<3 {y = y%z;}
+	}
+}
+#$ <fun_def> ''a''da'asd'''\\`*/-+;;;;222''
+(int x,int y, int z) = function f2(int q,int @w2)
+{
+#$ check the priorities
+const int x = 3+4*!5+~(!2-3--3+~2)||2*!(3+4)&!2==3+1>=33+2&&!(-22-2);
+x = 2;
+x.f();
+this.a.f();
+}
+#(
+(int x) = function myF(){const int y = ([1,2]);}
+)#
