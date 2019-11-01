@@ -20,7 +20,7 @@ stmt: assign ';' | func_call ';' | cond_stmt | loop_stmt | Break ';' | Continue 
 assign: (var | '(' var (',' var)* ')') '=' expr;
 var: ((This | Super)'.')? ref ('.' ref)*;
 ref: ID ('[' expr ']')*;
-expr: unary_op expr | expr binary_op expr | '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
+expr: unary_op expr | expr mul_div_binary_op expr | expr binary_op expr | '(' expr ')' |  const_val | Allocate handle_call | func_call | var | list | Nil;
 func_call: (var '.')? handle_call | Read '(' ')' | Write '(' expr ')';
 list : '[' (expr | list) (','(expr | list))* ']';
 handle_call: ID '(' params? ')';
@@ -32,7 +32,8 @@ type: Int | Float | Bool | String | ID;
 const_val: Int_val  | Float_val |  String_val | Bool_val;
 unary_op: '!' | '~' | '-';
 binary_op: arithmetic | relational | bitwise | logical;
-arithmetic: '+' | '-' | '*' | '/' | '%';
+mul_div_binary_op: '*' | '/' | '%';
+arithmetic: '+' | '-';
 bitwise: '&' | '|';
 logical: '||' | '&&';
 relational: '==' | '!=' | '<=' | '>=' | '<' | '>';
